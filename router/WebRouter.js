@@ -11,6 +11,8 @@ import { editUser } from '../controller/UserController';
 import { updateUser } from '../controller/UserController';
 import { createUser } from '../controller/UserController';
 import { insertUser } from '../controller/UserController';
+import ProductController from '../controller/ProductController';
+import CategoryController from '../controller/CategoryController';
 import { sessionMiddleware, getLoginPage, loginUser, getLogoutPage, authMiddleware, adminMiddleware, userMiddleware } from '../controller/authMiddlewareController';
 const router = express.Router()
 const initWebRoute = (app) => {
@@ -20,6 +22,11 @@ const initWebRoute = (app) => {
     router.get('/login', getLoginPage)
     router.post('/login', loginUser)
     router.get('/logout', getLogoutPage)
+    router.get('/product', ProductController.getAllProduct)
+    router.get('/deltaproduct/:id', ProductController.deltaProduct)
+    router.get('/category', CategoryController.getAllCategory)
+
+
     router.get('/getuser', authMiddleware, getAllUser)
     router.get('/deltauser/:id', authMiddleware, userMiddleware, viewUser)
     router.post('/deleteuser/', authMiddleware, userMiddleware, deleteUser)
@@ -27,6 +34,17 @@ const initWebRoute = (app) => {
     router.post('/edituser/', authMiddleware, userMiddleware, updateUser)
     router.get('/createnewuser/', authMiddleware, adminMiddleware, createUser)
     router.post('/createnewuser/', authMiddleware, adminMiddleware, insertUser)
+
+    // // Route để thiết lập session
+    // router.get('/set-session', (req, res) => {
+    //     req.session.user = {
+    //         username: 'nthyen',
+    //         fullname: 'Nguyễn Thị Hồng Yến'
+    //     }
+    //     res.send("Set ok!");
+    // });
+
+    // Route để lấy thông tin từ session
     router.get('/get-session', (req, res) => {
         res.send(req.session);
     });

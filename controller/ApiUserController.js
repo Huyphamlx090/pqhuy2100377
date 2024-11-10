@@ -125,14 +125,14 @@ const loginUser = async (req, res) => {
     try {
         const user = await userModel.getUserByUsername(username);
         if (!user) {
-            return res.status(409).json({ 
+            return res.status(409).json({ // 409 Conflict
                 errCode: 1,
                 message: "Tài khoản và mật khẩu không đúng.",
             });
         }
         const match = await bcrypt.compare(password, user.password);
         if (!match) {
-            return res.status(409).json({ 
+            return res.status(409).json({ // 409 Conflict
                 errCode: 1,
                 message: "Tài khoản và mật khẩu không đúng.",
             });
@@ -166,5 +166,12 @@ const logoutUser = (req, res) => {
     });
 };
 
-
-export default { getAllUsers, detailUser, deleteUser, updateUser, insertUser, loginUser, logoutUser};
+const detailUserbyUsername = async (req, res) => {
+    let data = await userModel.getUserByUsername(req.params.username);
+    return res.status(200).json({
+      errCode: 1,
+      message: "Success",
+      deltauser: data
+    })
+  }
+export default { getAllUsers, detailUser, deleteUser, updateUser, insertUser, loginUser, logoutUser, detailUserbyUsername};
